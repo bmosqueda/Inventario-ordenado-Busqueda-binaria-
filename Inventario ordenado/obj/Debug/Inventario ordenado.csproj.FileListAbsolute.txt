@@ -1,0 +1,10 @@
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\obj\Debug\Inventario ordenado.csprojResolveAssemblyReference.cache
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\obj\Debug\Inventario.Form1.resources
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\obj\Debug\Inventario_ordenado.Properties.Resources.resources
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\obj\Debug\Inventario ordenado.csproj.GenerateResource.Cache
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\obj\Debug\Inventario ordenado.csproj.CoreCompileInputs.cache
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\bin\Debug\Inventario ordenado.exe.config
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\bin\Debug\Inventario ordenado.exe
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\bin\Debug\Inventario ordenado.pdb
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\obj\Debug\Inventario ordenado.exe
+C:\Users\brand\source\repos\Inventario ordenado\Inventario ordenado\obj\Debug\Inventario ordenado.pdb
