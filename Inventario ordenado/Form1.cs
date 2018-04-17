@@ -55,13 +55,7 @@ namespace Inventario
 
             public Inventory(int productsNumber)
             {
-                //Si el primer elemento que se agrega tiene un id mayor al número de elementos + 1 
-                //hay un pequeño problrma, no se truena pero no lo graba.
                 products = new Product[productsNumber];
-                for (int i = 0; i < Length; i++)
-                {
-                    products[i] = new Product(productsNumber + 1);
-                }
                 lastElement = 0;
             }
 
@@ -69,14 +63,15 @@ namespace Inventario
             public Product search(int id)
             {
                 int min = 0;
-                int max = lastElement - 2;
+                int max = lastElement - 1;
                 int mean;
 
                 while (max >= min)
                 {
                     mean = (min + max) / 2;
-                    if (products[mean].Id == id)
-                        return products[mean];
+                    if(products[mean] != null)
+                        if (products[mean].Id == id)
+                            return products[mean];
 
                     if (id > mean)
                         min = mean + 1;
@@ -98,35 +93,42 @@ namespace Inventario
                 while (max >= min)
                 {
                     mean = (min + max) / 2;
-                    if (products[mean].Id == id)
-                        return -1;
-
-                    if (id > products[mean].Id)
-                        min = mean + 1;
+                    if (products[mean] != null)
+                    {
+                        if (products[mean].Id == id)
+                            return -1;
+                        if (id > products[mean].Id)
+                            min = mean + 1;
+                        else
+                            max = mean - 1;
+                    }
                     else
-                        max = mean - 1;
+                    {
+                            max = mean - 1;
+                    }
 
                     position = mean;
                 }
 
-                //Problem
+                if (products[position] != null)
                 position = products[position].Id > id ? position : position + 1;
+
                 return position;
             }
 
-            public string add(int id, string name, double cost, string description, int amount)
+            public string add(Product product)
             {
                 if (lastElement < Length)
                 {
-                    int insertPosition = getInsertPosition(id);
+                    int insertPosition = getInsertPosition(product.Id);
                     if (insertPosition != -1)
                     {
-                        insert(insertPosition, new Product(id, name, cost, description, amount));
+                        insert(insertPosition, product);
                         lastElement++;
                         return "Se agregó exitosamente el producto";
                     }
                     else
-                        return "Ya existe un producto con el id " + id;
+                        return "Ya existe un producto con el id " + product.Id;
                 }
                 else
                 {
@@ -139,8 +141,8 @@ namespace Inventario
                 //i <= lastElement because lastElement must be incremented int after of this method no before
                 for (int i = position; i <= lastElement; i++)
                 {
-                    Product temp = new Product(products[i].Id, products[i].Nombre, products[i].Costo, products[i].Descripcion, products[i].Cantidad);
-                    products[i] = new Product(product.Id, product.Nombre, product.Costo, product.Descripcion, product.Cantidad);
+                    Product temp = products[i];
+                    products[i] = product;
                     product = temp;
                 }
             }
@@ -157,12 +159,17 @@ namespace Inventario
                 }
                 else
                 {
-                    for (int i = pos; i < lastElement - 1; i++)
-                        products[i] = new Product(products[i + 1].Id, products[i + 1].Nombre, products[i + 1].Costo, products[i + 1].Descripcion, products[i + 1].Cantidad);
+                    for (int i = pos; i <= lastElement - 1; i++)
+                        if (products[i] != null)
+                            products[i] = products[i + 1];
 
-                    products[lastElement - 1] = new Product(Length + 1);
+                    if(lastElement - 1 > 0)
+                        products[lastElement - 1] = null;
+                    else
+                        products[0] = null;
 
                     lastElement--;
+
                     return "Se eliminó correctamente el producto";
                 }
             }
@@ -170,7 +177,7 @@ namespace Inventario
             public int searchPosition(int id)
             {
                 int min = 0;
-                int max = lastElement - 2;
+                int max = lastElement - 1;
                 int mean;
 
                 while (max >= min)
@@ -215,15 +222,16 @@ namespace Inventario
         {
             InitializeComponent();
             inventory = new Inventory(15);
-            //addProducts();
+            addProducts();
         }
 
         //Debuggin method
         public void addProducts()
         {
+            Random a = new Random();
             for (int i = 1; i < 10; i++)
             {
-                inventory.add(i * 2, "producto " + (i * 2), i * 2, "description " + (i*2) + " " + (i*2) + " " + " " + (i*2), (i*2));
+                inventory.add(new Product(a.Next(0,15), "producto " + (i * 2), i * 2, "description " + (i*2) + " " + (i*2) + " " + " " + (i*2), (i*2)));
             }
         }
 
@@ -237,7 +245,7 @@ namespace Inventario
         {
             if (txtNombre.Text.Trim() != "" && txtDescripcion.Text.Trim() != "")
             {
-                string agregar = inventory.add(Convert.ToInt32(numCodigo.Value), txtNombre.Text, Convert.ToDouble(numCantidad.Value), txtDescripcion.Text, Convert.ToInt32(numCantidad.Value));
+                string agregar = inventory.add(new Product(Convert.ToInt32(numCodigo.Value), txtNombre.Text, Convert.ToDouble(numCantidad.Value), txtDescripcion.Text, Convert.ToInt32(numCantidad.Value)));
                 btnListar.PerformClick();
                 lblEstado.Text = agregar;
             }
